@@ -1,0 +1,86 @@
+﻿@model GreenCartFarmers.WebApp.Delivery
+
+@{
+    ViewBag.Title = "Edit Delivery";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    .edit-form-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        animation: fadeInUp 0.5s ease forwards;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-label {
+        font-weight: 600;
+    }
+
+    .btn-save {
+        background-color: #0d6efd;
+        color: white;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-save:hover {
+        background-color: #084cd9;
+        color: white;
+    }
+
+    .validation-summary-errors {
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="edit-form-container">
+    <h2 class="mb-4 text-primary">Edit Delivery</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger validation-summary-errors" })
+        @Html.HiddenFor(model => model.DeliveryId)
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.OrderId, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownList("OrderId", null, htmlAttributes: new { @class = "form-select" })
+            @Html.ValidationMessageFor(model => model.OrderId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.DeliveryDate, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.DeliveryDate, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+            @Html.ValidationMessageFor(model => model.DeliveryDate, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.DeliveryStatus, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.DeliveryStatus, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DeliveryStatus, "", new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-save">Save</button>
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary ms-2" })
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

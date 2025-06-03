@@ -1,0 +1,68 @@
+﻿@model List<GreenCartFarmers.WebApp.Delivery>
+
+@{
+    ViewBag.Title = "My Deliveries";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>My Deliveries</h2>
+
+<!-- Hidden input to hold username -->
+<input type="hidden" id="username" value="" />
+
+<!-- Table for deliveries -->
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Delivery ID</th>
+            <th>Order ID</th>
+            <th>Order Date</th>
+            <th>Delivery Status</th>
+            <th>Delivery Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var delivery in Model)
+            {
+                <tr>
+                    <td>@delivery.DeliveryId</td>
+                    <td>@delivery.OrderId</td>
+                    <td>@(delivery.Order.OrderDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
+                    <td>@delivery.Status</td>
+                    <td>@(delivery.DeliveryDate?.ToString("yyyy-MM-dd") ?? "Pending")</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="@Url.Action("Details", "BuyerDeliveries", new { id = delivery.DeliveryId, username = Request.QueryString["username"] })">Details</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">No deliveries found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    // On page load, get username from localStorage and update hidden input
+    document.addEventListener("DOMContentLoaded", function () {
+        var storedUsername = localStorage.getItem("username");
+        if (!storedUsername) {
+            alert("Please login first.");
+            window.location.href = "/Auth/Login";
+        } else {
+            document.getElementById("username").value = storedUsername;
+
+            // If URL doesn't have username query param, redirect with it appended
+            if (!new URLSearchParams(window.location.search).has('username')) {
+                var newUrl = window.location.pathname + "?username=" + encodeURIComponent(storedUsername);
+                window.history.replaceState(null, "", newUrl);
+            }
+        }
+    });
+</script>

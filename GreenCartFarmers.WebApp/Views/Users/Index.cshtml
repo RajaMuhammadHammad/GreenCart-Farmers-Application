@@ -1,0 +1,273 @@
+﻿@model IEnumerable<GreenCartFarmers.WebApp.User>
+@{
+    ViewBag.Title = "Users Management";
+}
+
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .page-header h2 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 300;
+    }
+
+    .page-header p {
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+
+    .create-btn {
+        background: linear-gradient(45deg, #28a745, #20c997);
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 25px;
+        text-decoration: none;
+        display: inline-block;
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        font-weight: 500;
+    }
+
+    .create-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+    .users-table {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+
+    .table {
+        margin: 0;
+        border: none;
+    }
+
+    .table thead th {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        color: #495057;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        padding: 1.2rem 1rem;
+        border: none;
+        position: relative;
+    }
+
+    .table thead th:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8f9ff;
+        transform: scale(1.01);
+    }
+
+    .table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        border: none;
+        border-bottom: 1px solid #f1f3f4;
+    }
+
+    .user-name {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .user-email {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+
+    .user-role {
+        background: linear-gradient(45deg, #17a2b8, #20c997);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .user-role.admin {
+        background: linear-gradient(45deg, #dc3545, #fd7e14);
+    }
+
+    .date-info {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+    }
+
+    .btn-action {
+        padding: 6px 12px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 0.8rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-edit {
+        background: linear-gradient(45deg, #ffc107, #fd7e14);
+        color: white;
+    }
+
+    .btn-details {
+        background: linear-gradient(45deg, #17a2b8, #20c997);
+        color: white;
+    }
+
+    .btn-delete {
+        background: linear-gradient(45deg, #dc3545, #e83e8c);
+        color: white;
+    }
+
+    .btn-action:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        color: white;
+        text-decoration: none;
+    }
+
+    .container-fluid {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #6c757d;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    @@media (max-width: 768px) {
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .table-responsive {
+            font-size: 0.85rem;
+        }
+
+        .page-header h2 {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="page-header">
+        <h2>User Management</h2>
+        <p>Connecting farmers with consumers for fresh, sustainable produce</p>
+    </div>
+
+    @Html.ActionLink("Create New User", "Create", null, new { @class = "create-btn" })
+
+    <div class="users-table">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="user-name">@Html.DisplayFor(modelItem => item.UserName)</div>
+                                </td>
+                                <td>
+                                    <div class="user-email">@Html.DisplayFor(modelItem => item.Email)</div>
+                                </td>
+                                <td>
+                                    <span class="user-role @(item.Role.ToLower() == "admin" ? "admin" : "")">
+                                        @Html.DisplayFor(modelItem => item.Role)
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="date-info">@Html.DisplayFor(modelItem => item.CreatedAt)</div>
+                                </td>
+                                <td>
+                                    <div class="date-info">@Html.DisplayFor(modelItem => item.UpdatedAt)</div>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.UserId }, new { @class = "btn-action btn-edit" })
+                                        @Html.ActionLink("Details", "Details", new { id = item.UserId }, new { @class = "btn-action btn-details" })
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.UserId }, new { @class = "btn-action btn-delete" })
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    <i class="fa fa-users"></i>
+                                    <h4>No users found</h4>
+                                    <p>Start by creating your first user account.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+﻿@model IEnumerable<GreenCartFarmers.WebApp.Review>
+
+@{
+    ViewBag.Title = "Reviews";
+}
+
+<!-- Bootstrap 5 CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<!-- Custom CSS for animation and aesthetics -->
+<style>
+    .reviews-table {
+        animation: fadeInUp 0.6s ease-in-out;
+    }
+
+    @@keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .table thead th {
+        background-color: #f8f9fa;
+        color: #343a40;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-action {
+        margin-right: 5px;
+    }
+
+    .header-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="card shadow p-4 rounded-4">
+        <div class="header-actions mb-3">
+            <h2 class="mb-0">Product Reviews</h2>
+            @Html.ActionLink("➕ Create New", "Create", null, new { @class = "btn btn-success btn-sm" })
+        </div>
+
+        <table class="table table-hover table-bordered reviews-table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.First().Product.ProductName)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().User.UserName)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().Rating)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().Comment)</th>
+                    <th>@Html.DisplayNameFor(model => model.First().CreatedAt)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Product.ProductName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.User.UserName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Rating)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Comment)</td>
+                        <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
+                        <td>
+                            @Html.ActionLink("✏️ Edit", "Edit", new { id = item.ReviewId }, new { @class = "btn btn-sm btn-warning btn-action" })
+                            @Html.ActionLink("📄 Details", "Details", new { id = item.ReviewId }, new { @class = "btn btn-sm btn-info btn-action" })
+                            @Html.ActionLink("🗑️ Delete", "Delete", new { id = item.ReviewId }, new { @class = "btn btn-sm btn-danger btn-action" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

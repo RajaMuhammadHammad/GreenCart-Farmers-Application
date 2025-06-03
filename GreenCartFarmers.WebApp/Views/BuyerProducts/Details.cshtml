@@ -1,0 +1,455 @@
+﻿@model GreenCartFarmers.WebApp.Product
+@{
+    ViewBag.Title = "Product Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Back Button -->
+            <div class="mb-4">
+                @Html.ActionLink("← Back to Products", "Index", null,
+                    new { @class = "btn btn-outline-primary btn-sm rounded-pill px-4 fw-medium" })
+            </div>
+
+            <!-- Main Product Card -->
+            <div class="product-card">
+                <!-- Header -->
+                <div class="product-header">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="product-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div>
+                            <h1 class="product-title">@Model.ProductName</h1>
+                            <p class="product-subtitle">Fresh from our farm</p>
+                        </div>
+                    </div>
+
+                    <!-- Badges -->
+                    <div class="product-badges">
+                        <span class="badge-item badge-fresh">
+                            <i class="fas fa-leaf"></i>Fresh
+                        </span>
+                        <span class="badge-item badge-direct">
+                            <i class="fas fa-truck"></i>Farm Direct
+                        </span>
+                        <span class="badge-item badge-organic">
+                            <i class="fas fa-certificate"></i>100% Organic
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Content Grid -->
+                <div class="row g-5">
+                    <!-- Price Section -->
+                    <div class="col-md-4">
+                        <div class="price-card">
+                            <div class="price-header">
+                                <i class="fas fa-tag"></i>
+                                <span>Price</span>
+                            </div>
+                            <div class="price-amount">
+                                <i class="fas fa-rupee-sign"></i>
+                                @Model.Price.ToString("N2")
+                            </div>
+                            <div class="price-unit">Per unit</div>
+                        </div>
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="col-md-8">
+                        <!-- Description -->
+                        <div class="info-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                Description
+                            </h3>
+                            <div class="description-content">
+                                @Model.Description
+                            </div>
+                        </div>
+
+                        <!-- Features Grid -->
+                        <div class="info-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-star"></i>
+                                Key Features
+                            </h3>
+                            <div class="features-grid">
+                                <div class="feature-item feature-organic">
+                                    <i class="fas fa-leaf"></i>
+                                    <span>100% Organic</span>
+                                </div>
+                                <div class="feature-item feature-delivery">
+                                    <i class="fas fa-shipping-fast"></i>
+                                    <span>Fast Delivery</span>
+                                </div>
+                                <div class="feature-item feature-quality">
+                                    <i class="fas fa-award"></i>
+                                    <span>Premium Quality</span>
+                                </div>
+                                <div class="feature-item feature-fresh">
+                                    <i class="fas fa-heart"></i>
+                                    <span>Farm Fresh</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="product-footer">
+                    <div class="footer-info">
+                        <i class="fas fa-headset"></i>
+                        Need help? Contact our support team
+                    </div>
+                    <div class="footer-actions">
+                        @Html.ActionLink("← Back to Products", "Index", null,
+                            new { @class = "btn btn-outline-secondary rounded-pill px-4" })
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Main Card Styling */
+    .product-card {
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 2.5rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+    }
+
+    /* Header Styling */
+    .product-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid #f8f9fa;
+    }
+
+    .product-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        box-shadow: 0 4px 16px rgba(40, 167, 69, 0.3);
+    }
+
+    .product-icon i {
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    .product-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    .product-subtitle {
+        color: #6c757d;
+        margin: 0.25rem 0 0 0;
+        font-size: 1rem;
+    }
+
+    /* Badges */
+    .product-badges {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .badge-item {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .badge-fresh {
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        color: #155724;
+        border: 1px solid #b8dabc;
+    }
+
+    .badge-direct {
+        background: linear-gradient(135deg, #cce7f0, #b3d7e6);
+        color: #0c5460;
+        border: 1px solid #9cc9d6;
+    }
+
+    .badge-organic {
+        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+        color: #856404;
+        border: 1px solid #f5d942;
+    }
+
+    .badge-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Price Card */
+    .price-card {
+        background: linear-gradient(135deg, #fff8e1, #ffecb3);
+        border: 2px solid #ffd54f;
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .price-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(255, 193, 7, 0.3);
+    }
+
+    .price-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255, 193, 7, 0.1) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+    .price-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: #f57c00;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .price-amount {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #e65100;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .price-unit {
+        color: #8d6e63;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    /* Info Sections */
+    .info-section {
+        margin-bottom: 2rem;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .section-title i {
+        color: #007bff;
+        font-size: 1.1rem;
+    }
+
+    .description-content {
+        background: linear-gradient(135deg, #f8f9ff, #e3f2fd);
+        border: 1px solid #e3f2fd;
+        border-left: 4px solid #007bff;
+        border-radius: 12px;
+        padding: 1.5rem;
+        color: #37474f;
+        line-height: 1.7;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .description-content:hover {
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        transform: translateX(4px);
+    }
+
+    /* Features Grid */
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .feature-item {
+        background: white;
+        border: 2px solid #f1f3f4;
+        border-radius: 16px;
+        padding: 1.25rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .feature-item:hover::before {
+        left: 100%;
+    }
+
+    .feature-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .feature-organic:hover { border-color: #28a745; }
+    .feature-delivery:hover { border-color: #17a2b8; }
+    .feature-quality:hover { border-color: #ffc107; }
+    .feature-fresh:hover { border-color: #dc3545; }
+
+    .feature-item i {
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+        display: block;
+    }
+
+    .feature-organic i { color: #28a745; }
+    .feature-delivery i { color: #17a2b8; }
+    .feature-quality i { color: #ffc107; }
+    .feature-fresh i { color: #dc3545; }
+
+    .feature-item span {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.9rem;
+    }
+
+    /* Footer */
+    .product-footer {
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+        border-top: 2px solid #f8f9fa;
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .footer-info {
+        color: #6c757d;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .footer-actions {
+        margin-left: auto;
+    }
+
+    /* Buttons */
+    .btn {
+        transition: all 0.3s ease;
+        font-weight: 500;
+        border-width: 2px;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #0056b3, #004085);
+        border-color: #0056b3;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .product-card {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+        }
+
+        .price-amount {
+            font-size: 2rem;
+        }
+
+        .features-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+
+        .product-footer {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .footer-actions {
+            margin-left: 0;
+        }
+    }
+
+    /* Animation for price tag */
+    .price-card .price-header i {
+        animation: pulse 2s infinite;
+    }
+
+    @@keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+</style>

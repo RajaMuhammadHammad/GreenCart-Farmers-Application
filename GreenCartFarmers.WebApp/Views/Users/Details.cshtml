@@ -1,0 +1,308 @@
+﻿@model GreenCartFarmers.WebApp.User
+@{
+    ViewBag.Title = "User Details";
+}
+
+<style>
+    .page-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
+        color: white;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .page-header h2 {
+        margin: 0;
+        font-size: 2.2rem;
+        font-weight: 300;
+    }
+
+    .details-container {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+
+    .details-title {
+        color: #2c3e50;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .details-title:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(90deg, #17a2b8, #20c997);
+        border-radius: 2px;
+    }
+
+    .user-profile {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-radius: 15px;
+        border-left: 5px solid #17a2b8;
+    }
+
+    .user-avatar {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #17a2b8, #20c997);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-right: 1.5rem;
+        text-transform: uppercase;
+    }
+
+    .user-basic-info h3 {
+        margin: 0 0 0.5rem 0;
+        color: #2c3e50;
+        font-size: 1.5rem;
+    }
+
+    .user-role-badge {
+        background: linear-gradient(45deg, #17a2b8, #20c997);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .user-role-badge.admin {
+        background: linear-gradient(45deg, #dc3545, #fd7e14);
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .detail-card {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 15px;
+        border-left: 4px solid #17a2b8;
+        transition: all 0.3s ease;
+    }
+
+    .detail-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .detail-label {
+        color: #6c757d;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+    }
+
+    .detail-value {
+        color: #2c3e50;
+        font-size: 1.1rem;
+        font-weight: 500;
+        word-break: break-all;
+    }
+
+    .date-value {
+        font-family: 'Courier New', monospace;
+        background: #e9ecef;
+        padding: 4px 8px;
+        border-radius: 5px;
+        font-size: 0.9rem;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-action {
+        padding: 12px 25px;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        min-width: 150px;
+        text-align: center;
+    }
+
+    .btn-edit {
+        background: linear-gradient(45deg, #ffc107, #fd7e14);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+    }
+
+    .btn-back {
+        background: linear-gradient(45deg, #6c757d, #495057);
+        color: white;
+        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+    }
+
+    .btn-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        color: white;
+        text-decoration: none;
+    }
+
+    .info-section {
+        background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        border: 1px solid #e1f5fe;
+    }
+
+    .info-section h5 {
+        color: #1976d2;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .password-warning {
+        background: #fff3cd;
+        color: #856404;
+        padding: 1rem;
+        border-radius: 10px;
+        border-left: 4px solid #ffc107;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    @@media (max-width: 768px) {
+        .page-container {
+            padding: 1rem;
+        }
+
+        .details-container {
+            padding: 1.5rem;
+        }
+
+        .details-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .user-profile {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .user-avatar {
+            margin-right: 0;
+            margin-bottom: 1rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn-action {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+</style>
+
+<div class="page-container">
+    <div class="page-header">
+        <h2>User Details</h2>
+    </div>
+
+    <div class="details-container">
+        <h4 class="details-title">User Information</h4>
+
+        <div class="user-profile">
+            <div class="user-avatar">
+                @(Model.UserName != null ? Model.UserName.Substring(0, 1) : "U")
+            </div>
+            <div class="user-basic-info">
+                <h3>@Html.DisplayFor(model => model.UserName)</h3>
+                <span class="user-role-badge @(Model.Role != null && Model.Role.ToLower() == "admin" ? "admin" : "")">
+                    @Html.DisplayFor(model => model.Role)
+                </span>
+            </div>
+        </div>
+
+        <div class="password-warning">
+            <strong>Security Notice:</strong> Password hash is displayed for administrative purposes only. In production, sensitive information should be properly secured.
+        </div>
+
+        <div class="details-grid">
+            <div class="detail-card">
+                <div class="detail-label">Email Address</div>
+                <div class="detail-value">@Html.DisplayFor(model => model.Email)</div>
+            </div>
+
+            <div class="detail-card">
+                <div class="detail-label">Password Hash</div>
+                <div class="detail-value" style="font-family: monospace; font-size: 0.8rem; word-break: break-all;">
+                    @Html.DisplayFor(model => model.PasswordHash)
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <div class="detail-label">Account Created</div>
+                <div class="detail-value">
+                    <span class="date-value">@Html.DisplayFor(model => model.CreatedAt)</span>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <div class="detail-label">Last Updated</div>
+                <div class="detail-value">
+                    <span class="date-value">@Html.DisplayFor(model => model.UpdatedAt)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h5>🌱 About GreenCart Farmers</h5>
+            <p>This user is part of our sustainable farming community, connecting farmers with consumers for fresh, locally-sourced produce. Together, we're building a more sustainable food system.</p>
+        </div>
+
+        <div class="action-buttons">
+            @Html.ActionLink("Edit User", "Edit", new { id = Model.UserId }, new { @class = "btn-action btn-edit" })
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-action btn-back" })
+        </div>
+    </div>
+</div>

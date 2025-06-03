@@ -1,0 +1,329 @@
+﻿@model GreenCartFarmers.WebApp.Review
+@{
+    ViewBag.Title = "Create Review";
+}
+
+<style>
+    .review-form-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 30px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .review-form-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #28a745, #20c997, #17a2b8);
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .form-header h2 {
+        color: #2c3e50;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-header p {
+        color: #6c757d;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    .form-section {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e9ecef;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+    .control-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+        font-size: 1rem;
+        display: block;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #fff;
+    }
+
+    .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+        outline: none;
+        transform: translateY(-1px);
+    }
+
+    .form-control:hover {
+        border-color: #ced4da;
+    }
+
+    /* Rating specific styling */
+    .rating-container {
+        position: relative;
+    }
+
+    .rating-stars {
+        display: flex;
+        gap: 5px;
+        margin-top: 10px;
+    }
+
+    .star {
+        font-size: 1.5rem;
+        color: #ddd;
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
+
+    .star:hover,
+    .star.active {
+        color: #ffc107;
+    }
+
+    /* Comment textarea styling */
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+        font-family: inherit;
+    }
+
+    /* Submit button styling */
+    .btn-submit {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 14px 40px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        background: linear-gradient(135deg, #218838, #1e7e34);
+    }
+
+    .btn-submit:active {
+        transform: translateY(0);
+    }
+
+    /* Back link styling */
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        color: #6c757d;
+        text-decoration: none;
+        font-weight: 500;
+        margin-top: 20px;
+        transition: color 0.3s ease;
+    }
+
+    .back-link:hover {
+        color: #28a745;
+        text-decoration: none;
+    }
+
+    .back-link::before {
+        content: '←';
+        margin-right: 8px;
+        font-size: 1.2rem;
+    }
+
+    /* Validation styling */
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .input-validation-error {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+    }
+
+    /* Responsive design */
+    @@media (max-width: 768px) {
+        .review-form-container {
+            margin: 20px;
+            padding: 20px;
+        }
+
+        .form-section {
+            padding: 20px;
+        }
+
+        .form-header h2 {
+            font-size: 2rem;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+        }
+    }
+
+    /* Animation for form appearance */
+    .review-form-container {
+        animation: slideUp 0.6s ease-out;
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Icon styling */
+    .field-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        pointer-events: none;
+    }
+
+    .form-group {
+        position: relative;
+    }
+</style>
+
+<div class="review-form-container">
+    <div class="form-header">
+        <h2>Share Your Experience</h2>
+        <p>Help others by sharing your honest review</p>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-section">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProductId, "Select Product", htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownList("ProductId", null, "Choose a product...", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserId, "Customer", htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownList("UserId", null, "Select customer...", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group rating-container">
+                @Html.LabelFor(model => model.Rating, "Your Rating", htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "1", @max = "5", @step = "0.1", @placeholder = "Rate from 1 to 5" } })
+                <div class="rating-stars">
+                    <span class="star" data-rating="1">★</span>
+                    <span class="star" data-rating="2">★</span>
+                    <span class="star" data-rating="3">★</span>
+                    <span class="star" data-rating="4">★</span>
+                    <span class="star" data-rating="5">★</span>
+                </div>
+                @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Comment, "Your Review", htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control", @placeholder = "Tell us about your experience with this product...", @rows = "5" } })
+                @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CreatedAt, "Review Date", htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.CreatedAt, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                @Html.ValidationMessageFor(model => model.CreatedAt, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group" style="text-align: center; margin-top: 30px;">
+                <input type="submit" value="Submit Review" class="btn-submit" />
+            </div>
+        </div>
+    }
+
+    <div style="text-align: center;">
+        @Html.ActionLink("Back to Reviews", "Index", null, new { @class = "back-link" })
+    </div>
+</div>
+
+<script>
+    // Interactive star rating
+    document.addEventListener('DOMContentLoaded', function() {
+        const stars = document.querySelectorAll('.star');
+        const ratingInput = document.querySelector('input[name="Rating"]');
+
+        stars.forEach((star, index) => {
+            star.addEventListener('click', function() {
+                const rating = index + 1;
+                ratingInput.value = rating;
+                updateStarDisplay(rating);
+            });
+
+            star.addEventListener('mouseover', function() {
+                updateStarDisplay(index + 1);
+            });
+        });
+
+        document.querySelector('.rating-stars').addEventListener('mouseleave', function() {
+            updateStarDisplay(ratingInput.value || 0);
+        });
+
+        function updateStarDisplay(rating) {
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize star display if there's a pre-existing value
+        updateStarDisplay(ratingInput.value || 0);
+    });
+</script>

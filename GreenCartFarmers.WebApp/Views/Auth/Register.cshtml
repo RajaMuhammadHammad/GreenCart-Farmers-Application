@@ -1,0 +1,265 @@
+﻿@model GreenCartFarmers.Models.RegisterModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #2dd4bf 0%, #06b6d4 50%, #3b82f6 100%);
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .register-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .register-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(15px);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        padding: 50px;
+        width: 100%;
+        max-width: 520px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .register-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #2dd4bf, #06b6d4, #3b82f6);
+    }
+
+    .register-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .register-header h2 {
+        color: #1f2937;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        background: linear-gradient(135deg, #2dd4bf, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .register-header p {
+        color: #6b7280;
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+        position: relative;
+        flex: 1;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #374151;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 16px 20px;
+        border: 2px solid #e5e7eb;
+        border-radius: 14px;
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #f9fafb;
+        color: #1f2937;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #06b6d4;
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .form-control:hover {
+        border-color: #06b6d4;
+        background: #fff;
+    }
+
+    .role-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 12px center;
+        background-repeat: no-repeat;
+        background-size: 16px;
+        padding-right: 50px;
+    }
+
+    .btn-register {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #2dd4bf 0%, #06b6d4 50%, #3b82f6 100%);
+        color: white;
+        border: none;
+        border-radius: 14px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-top: 15px;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-register:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(6, 182, 212, 0.4);
+    }
+
+    .btn-register:active {
+        transform: translateY(-1px);
+    }
+
+    .btn-register::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.6s;
+    }
+
+    .btn-register:hover::before {
+        left: 100%;
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 2px solid #e5e7eb;
+    }
+
+    .login-link a {
+        color: #06b6d4;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 1.05rem;
+    }
+
+    .login-link a:hover {
+        color: #0891b2;
+        text-decoration: underline;
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        font-size: 1.2rem;
+    }
+
+    .role-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        background: #dbeafe;
+        color: #1e40af;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-left: 8px;
+    }
+
+    @@media (max-width: 600px) {
+        .register-card {
+            padding: 30px;
+            margin: 10px;
+        }
+
+        .register-header h2 {
+            font-size: 2rem;
+        }
+
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+    }
+</style>
+
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            <h2>Join GreenCart</h2>
+            <p>Create your account and start trading fresh</p>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            <div class="form-row">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.UserName, "Username")
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Choose a username" })
+                    <div class="input-icon">👤</div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, "Email Address")
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "your.email@example.com", @type = "email" })
+                    <div class="input-icon">✉️</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.PasswordHash, "Password")
+                @Html.PasswordFor(m => m.PasswordHash, new { @class = "form-control", @placeholder = "Create a strong password" })
+                <div class="input-icon">🔒</div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Role, "Account Type")
+                @Html.DropDownListFor(m => m.Role, new SelectList(new[] {
+                    new { Value = "Farmer", Text = "🌱 Farmer - Sell your produce" },
+                    new { Value = "Buyer", Text = "🛒 Buyer - Purchase fresh goods" }
+                }, "Value", "Text"), new { @class = "form-control role-select" })
+            </div>
+
+            <button type="submit" class="btn-register">Create Account</button>
+        }
+
+        <div class="login-link">
+            <p>Already have an account? <a href="@Url.Action("Login", "Auth")">Sign in here</a></p>
+        </div>
+    </div>
+</div>

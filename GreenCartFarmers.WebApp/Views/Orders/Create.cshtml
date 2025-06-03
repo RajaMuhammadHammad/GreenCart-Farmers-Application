@@ -1,0 +1,1081 @@
+﻿@model GreenCartFarmers.WebApp.Order
+@{
+    ViewBag.Title = "Create Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid px-4 py-5 min-vh-100">
+    <!-- Background Elements -->
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+            <!-- Enhanced Header Section -->
+            <div class="page-header d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-between mb-5 gap-4">
+                <div class="d-flex align-items-center">
+                    <div class="header-icon-container position-relative">
+                        <div class="header-icon bg-gradient-primary rounded-circle p-4 me-4 shadow-xl position-relative">
+                            <i class="fas fa-cart-plus text-white fs-3"></i>
+                            <div class="icon-ring"></div>
+                            <div class="icon-pulse"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h1 class="display-4 fw-bold text-dark mb-2 gradient-text animate-text">Create New Order</h1>
+                        <p class="text-muted mb-0 lead fs-5">
+                            <i class="fas fa-leaf text-success me-2"></i>
+                            Fresh produce delivery for GreenCart Farmers
+                        </p>
+                        <div class="breadcrumb-custom mt-2">
+                            <span class="breadcrumb-item">Dashboard</span>
+                            <i class="fas fa-chevron-right mx-2 text-muted"></i>
+                            <span class="breadcrumb-item">Orders</span>
+                            <i class="fas fa-chevron-right mx-2 text-muted"></i>
+                            <span class="breadcrumb-item active">Create</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-actions d-flex gap-3 flex-wrap">
+                    @Html.ActionLink("View All Orders", "Index", null, new { @class = "btn btn-outline-primary btn-lg btn-modern shadow-sm" })
+                    <button type="button" class="btn btn-outline-secondary btn-lg btn-modern shadow-sm" onclick="window.history.back()">
+                        <i class="fas fa-arrow-left me-2"></i>Go Back
+                    </button>
+                </div>
+            </div>
+
+            <!-- Enhanced Form Section -->
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-container" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-card card border-0 shadow-xl p-0 overflow-hidden">
+                    <!-- Card Header -->
+                    <div class="card-header-custom p-4">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div class="feature-icon bg-white rounded-circle p-3 me-3 shadow-sm">
+                                    <i class="fas fa-shopping-cart text-primary fs-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="card-title mb-1 text-white fw-bold">Order Information</h4>
+                                    <p class="text-white-50 mb-0">Fill in the details below to create a new order</p>
+                                </div>
+                            </div>
+                            <div class="form-progress">
+                                <div class="progress-ring">
+                                    <div class="progress-fill"></div>
+                                </div>
+                                <span class="progress-text">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4 p-lg-5">
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger alert-modern mb-4 d-none" })
+
+                        <div class="row g-4">
+                            <!-- User Selection -->
+                            <div class="col-lg-6">
+                                <div class="form-group-modern">
+                                    @Html.LabelFor(model => model.UserId, "Customer", new { @class = "form-label-modern" })
+                                    <div class="input-group-modern">
+                                        <div class="input-icon">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        @Html.DropDownList("UserId", null, "Choose a customer...", new { @class = "form-control-modern form-select-modern", @data_field = "user" })
+                                        <div class="input-border"></div>
+                                        @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "field-error" })
+                                    </div>
+                                    <div class="field-helper">Select the customer for this order</div>
+                                </div>
+                            </div>
+
+                            <!-- Order Date -->
+                            <div class="col-lg-6">
+                                <div class="form-group-modern">
+                                    @Html.LabelFor(model => model.OrderDate, "Order Date", new { @class = "form-label-modern" })
+                                    <div class="input-group-modern">
+                                        <div class="input-icon">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </div>
+                                        @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control-modern datepicker", @placeholder = "Select order date", @data_field = "date" } })
+                                        <div class="input-border"></div>
+                                        @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "field-error" })
+                                    </div>
+                                    <div class="field-helper">When should this order be processed?</div>
+                                </div>
+                            </div>
+
+                            <!-- Status Selection -->
+                            <div class="col-lg-6">
+                                <div class="form-group-modern">
+                                    @Html.LabelFor(model => model.Status, "Order Status", new { @class = "form-label-modern" })
+                                    <div class="input-group-modern">
+                                        <div class="input-icon">
+                                            <i class="fas fa-info-circle"></i>
+                                        </div>
+                                        @Html.DropDownListFor(model => model.Status, new SelectList(new[]
+                                        {
+                                            new { Value = "Pending", Text = "🟡 Pending", Description = "Order received, awaiting confirmation" },
+                                            new { Value = "Confirmed", Text = "🟢 Confirmed", Description = "Order confirmed and ready for processing" },
+                                            new { Value = "Processing", Text = "🔵 Processing", Description = "Order is being prepared" },
+                                            new { Value = "Shipped", Text = "🚚 Shipped", Description = "Order is on the way" },
+                                            new { Value = "Delivered", Text = "✅ Delivered", Description = "Order has been delivered" },
+                                            new { Value = "Cancelled", Text = "❌ Cancelled", Description = "Order has been cancelled" }
+                                        }, "Value", "Text"), "Select order status...", new { @class = "form-control-modern form-select-modern", @data_field = "status" })
+                                        <div class="input-border"></div>
+                                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "field-error" })
+                                    </div>
+                                    <div class="field-helper">Current status of the order</div>
+                                </div>
+                            </div>
+
+                            <!-- Additional Notes -->
+                            <div class="col-12">
+                                <div class="form-group-modern">
+                                    <label class="form-label-modern">Order Notes (Optional)</label>
+                                    <div class="input-group-modern">
+                                        <div class="input-icon">
+                                            <i class="fas fa-sticky-note"></i>
+                                        </div>
+                                        <textarea class="form-control-modern" rows="4" placeholder="Add any special instructions or notes for this order..." data-field="notes"></textarea>
+                                        <div class="input-border"></div>
+                                    </div>
+                                    <div class="field-helper">Any additional information about this order</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="form-actions mt-5 pt-4 border-top">
+                            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-between align-items-center">
+                                <div class="form-stats">
+                                    <small class="text-muted">
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                        Your data is secure and encrypted
+                                    </small>
+                                </div>
+                                <div class="d-flex gap-3">
+                                    <button type="button" class="btn btn-light btn-lg btn-modern-secondary" onclick="resetForm()">
+                                        <i class="fas fa-undo me-2"></i>Reset Form
+                                    </button>
+                                    <button type="submit" class="btn btn-success btn-lg btn-modern-primary">
+                                        <span class="btn-content">
+                                            <i class="fas fa-check-circle me-2"></i>
+                                            <span class="btn-text">Create Order</span>
+                                        </span>
+                                        <div class="btn-shine"></div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --primary-color: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #a5b4fc;
+        --success-color: #10b981;
+        --success-dark: #059669;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --info-color: #06b6d4;
+        --secondary-color: #64748b;
+        --dark-color: #1e293b;
+        --light-bg: #f1f5f9;
+        --white: #ffffff;
+        --border-color: #e2e8f0;
+        --text-muted: #64748b;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        --border-radius: 20px;
+        --border-radius-sm: 12px;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-fast: all 0.15s ease;
+    }
+
+    body {
+        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    /* Background Shapes */
+    .background-shapes {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+    .shape {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.1;
+        animation: float 20s infinite linear;
+    }
+
+    .shape-1 {
+        width: 300px;
+        height: 300px;
+        background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .shape-2 {
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(135deg, var(--success-color), var(--info-color));
+        top: 60%;
+        right: 15%;
+        animation-delay: -7s;
+    }
+
+    .shape-3 {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(135deg, var(--warning-color), var(--danger-color));
+        bottom: 20%;
+        left: 20%;
+        animation-delay: -14s;
+    }
+
+    /* Header Styles */
+    .page-header {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%);
+        backdrop-filter: blur(20px);
+        border-radius: var(--border-radius);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 2.5rem;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+        opacity: 0.05;
+        z-index: -1;
+    }
+
+    .header-icon-container {
+        perspective: 1000px;
+    }
+
+    .header-icon {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: var(--transition);
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header-icon:hover {
+        transform: rotateY(180deg) scale(1.1);
+    }
+
+    .icon-ring {
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        border: 2px solid var(--primary-light);
+        border-radius: 50%;
+        opacity: 0.3;
+        animation: rotate 10s linear infinite;
+    }
+
+    .icon-pulse {
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        border: 1px solid var(--primary-color);
+        border-radius: 50%;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .gradient-text {
+        background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+    }
+
+    .animate-text {
+        animation: slideInFromLeft 0.8s ease-out;
+    }
+
+    .breadcrumb-custom {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+    }
+
+    .breadcrumb-item.active {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+
+    /* Form Styles */
+    .form-card {
+        border-radius: var(--border-radius);
+        background: var(--white);
+        position: relative;
+        animation: slideUp 0.6s ease-out;
+    }
+
+    .card-header-custom {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-header-custom::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        animation: shimmer 3s infinite;
+    }
+
+    .feature-icon {
+        transition: var(--transition);
+    }
+
+    .feature-icon:hover {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .progress-ring {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: conic-gradient(var(--success-color) 0deg, rgba(255,255,255,0.2) 0deg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .progress-ring::before {
+        content: '';
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        position: absolute;
+    }
+
+    .progress-text {
+        position: absolute;
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+        z-index: 1;
+    }
+
+    /* Form Group Styles */
+    .form-group-modern {
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .form-label-modern {
+        font-weight: 600;
+        color: var(--dark-color);
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+        display: block;
+        position: relative;
+        transition: var(--transition);
+    }
+
+    .input-group-modern {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        z-index: 2;
+        transition: var(--transition);
+    }
+
+    .form-control-modern, .form-select-modern {
+        width: 100%;
+        padding: 1rem 1rem 1rem 3rem;
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius-sm);
+        background: var(--white);
+        font-size: 1rem;
+        transition: var(--transition);
+        position: relative;
+        z-index: 1;
+    }
+
+    .form-control-modern:focus, .form-select-modern:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .form-control-modern:focus + .input-border {
+        transform: scaleX(1);
+    }
+
+    .form-control-modern:focus ~ .input-icon {
+        color: var(--primary-color);
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .input-border {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+        transform: scaleX(0);
+        transition: var(--transition);
+        border-radius: 1px;
+    }
+
+    .field-helper {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: 0.5rem;
+        padding-left: 0.5rem;
+    }
+
+    .field-error {
+        color: var(--danger-color);
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        display: block;
+        font-weight: 500;
+    }
+
+    /* Button Styles */
+    .btn-modern-primary {
+        background: linear-gradient(135deg, var(--success-color), var(--success-dark));
+        border: none;
+        border-radius: var(--border-radius-sm);
+        color: white;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .btn-modern-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.4);
+        background: linear-gradient(135deg, var(--success-dark), var(--success-color));
+    }
+
+    .btn-modern-secondary {
+        background: var(--white);
+        border: 2px solid var(--border-color);
+        border-radius: var(--border-radius-sm);
+        color: var(--text-muted);
+        font-weight: 600;
+        transition: var(--transition);
+    }
+
+    .btn-modern-secondary:hover {
+        background: var(--light-bg);
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+
+    .btn-modern {
+        border-radius: var(--border-radius-sm);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+    }
+
+    .btn-modern:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-outline-primary.btn-modern {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        background: rgba(99, 102, 241, 0.05);
+    }
+
+    .btn-outline-primary.btn-modern:hover {
+        background: var(--primary-color);
+        color: white;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .btn-shine {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .btn-modern-primary:hover .btn-shine {
+        left: 100%;
+    }
+
+    /* Alert Styles */
+    .alert-modern {
+        border-radius: var(--border-radius-sm);
+        border: none;
+        box-shadow: var(--shadow-md);
+    }
+
+    /* Form Actions */
+    .form-actions {
+        background: linear-gradient(135deg, rgba(248, 250, 252, 0.5), rgba(241, 245, 249, 0.3));
+        border-radius: var(--border-radius-sm);
+        margin: 0 -2rem -2rem -2rem;
+        padding: 2rem;
+    }
+
+    .form-stats {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    /* Animations */
+    @@keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        25% { transform: translateY(-20px) rotate(90deg); }
+        50% { transform: translateY(0px) rotate(180deg); }
+        75% { transform: translateY(20px) rotate(270deg); }
+    }
+
+    @@keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.3; }
+        50% { transform: scale(1.1); opacity: 0.6; }
+    }
+
+    @@keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    @@keyframes slideInFromLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes shimmer {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .page-header {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .header-icon {
+            width: 60px;
+            height: 60px;
+        }
+
+        .display-4 {
+            font-size: 2rem;
+        }
+
+        .form-card {
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 1.5rem !important;
+        }
+
+        .form-actions {
+            margin: 0 -1.5rem -1.5rem -1.5rem;
+            padding: 1.5rem;
+        }
+
+        .d-flex.gap-3 {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .btn-lg {
+            width: 100%;
+        }
+    }
+
+    /* Dark mode support */
+    @@media (prefers-color-scheme: dark) {
+        :root {
+            --white: #1e293b;
+            --light-bg: #0f172a;
+            --border-color: #334155;
+            --text-muted: #94a3b8;
+            --dark-color: #f1f5f9;
+        }
+    }
+</style>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            // Initialize Datepicker with enhanced styling
+            $('.datepicker').datepicker({
+                format: 'mm/dd/yyyy',
+                autoclose: true,
+                todayHighlight: true,
+                orientation: 'bottom auto',
+                container: 'body',
+                showOnFocus: true
+            });
+
+            // Form field animations and interactions
+            $('.form-control-modern, .form-select-modern').on('focus', function () {
+                $(this).closest('.form-group-modern').addClass('focused');
+                updateProgress();
+            }).on('blur', function () {
+                $(this).closest('.form-group-modern').removeClass('focused');
+                updateProgress();
+            });
+
+            // Real-time form validation feedback
+            $('.form-control-modern, .form-select-modern').on('input change', function () {
+                const $group = $(this).closest('.form-group-modern');
+                const value = $(this).val();
+
+                if (value && value.trim() !== '') {
+                    $group.addClass('has-value').removeClass('has-error');
+                } else {
+                    $group.removeClass('has-value');
+                }
+
+                updateProgress();
+            });
+
+            // Progress calculation
+            function updateProgress() {
+                const totalFields = $('[data-field]').length;
+                const completedFields = $('[data-field]').filter(function () {
+                    const value = $(this).val();
+                    return value && value.trim() !== '';
+                }).length;
+
+                const progress = Math.round((completedFields / totalFields) * 100);
+                updateProgressRing(progress);
+            }
+
+            // Update progress ring
+            function updateProgressRing(percentage) {
+                const ring = $('.progress-ring');
+                const text = $('.progress-text');
+                const degrees = (percentage / 100) * 360;
+
+                ring.css('background', `conic-gradient(var(--success-color) ${degrees}deg, rgba(255,255,255,0.2) ${degrees}deg)`);
+                text.text(percentage + '%');
+
+                if (percentage === 100) {
+                    ring.addClass('completed');
+                    setTimeout(() => {
+                        ring.append('<i class="fas fa-check" style="position: absolute; color: white; z-index: 2;"></i>');
+                    }, 300);
+                }
+            }
+
+            // Enhanced form submission with loading state
+            $('form').on('submit', function (e) {
+                const submitBtn = $('.btn-modern-primary');
+                const originalContent = submitBtn.find('.btn-content').html();
+
+                submitBtn.prop('disabled', true)
+                    .find('.btn-content')
+                    .html('<i class="fas fa-spinner fa-spin me-2"></i><span class="btn-text">Creating Order...</span>');
+
+                // Re-enable and restore after 3 seconds (remove this in production)
+                setTimeout(() => {
+                    submitBtn.prop('disabled', false)
+                        .find('.btn-content')
+                        .html(originalContent);
+                }, 3000);
+            });
+
+            // Floating label effect
+            $('.form-control-modern, .form-select-modern').each(function () {
+                if ($(this).val()) {
+                    $(this).closest('.form-group-modern').addClass('has-value');
+                }
+            });
+
+            // Enhanced error handling
+            $('.field-error').each(function () {
+                if ($(this).text().trim()) {
+                    $(this).closest('.form-group-modern').addClass('has-error');
+                }
+            });
+
+            // Smooth scroll to error if validation fails
+            if ($('.field-error:visible').length > 0) {
+                $('html, body').animate({
+                    scrollTop: $('.field-error:visible').first().closest('.form-group-modern').offset().top - 100
+                }, 500);
+            }
+
+            // Tooltip for form fields
+            $('[data-field]').each(function () {
+                const field = $(this).data('field');
+                let tooltip = '';
+
+                switch (field) {
+                    case 'user':
+                        tooltip = 'Select the customer who is placing this order';
+                        break;
+                    case 'date':
+                        tooltip = 'Choose when this order should be processed';
+                        break;
+                    case 'status':
+                        tooltip = 'Set the current status of this order';
+                        break;
+                    case 'notes':
+                        tooltip = 'Add any special instructions or notes';
+                        break;
+                }
+
+                if (tooltip) {
+                    $(this).attr('title', tooltip);
+                }
+            });
+
+            // Auto-save functionality (localStorage simulation)
+            const formData = {};
+
+            $('[data-field]').on('input change', function () {
+                const field = $(this).data('field');
+                const value = $(this).val();
+                formData[field] = value;
+
+                // Show auto-save indicator
+                showAutoSaveIndicator();
+            });
+
+            function showAutoSaveIndicator() {
+                const indicator = $('<div class="auto-save-indicator">Auto-saved <i class="fas fa-check-circle"></i></div>');
+                $('body').append(indicator);
+
+                setTimeout(() => {
+                    indicator.addClass('show');
+                }, 100);
+
+                setTimeout(() => {
+                    indicator.removeClass('show');
+                    setTimeout(() => indicator.remove(), 300);
+                }, 2000);
+            }
+
+            // Keyboard shortcuts
+            $(document).keydown(function (e) {
+                // Ctrl/Cmd + Enter to submit form
+                if ((e.ctrlKey || e.metaKey) && e.keyCode === 13) {
+                    e.preventDefault();
+                    $('form').submit();
+                }
+
+                // Escape to reset form
+                if (e.keyCode === 27) {
+                    if (confirm('Are you sure you want to reset the form? All unsaved changes will be lost.')) {
+                        resetForm();
+                    }
+                }
+            });
+
+            // Initialize progress on page load
+            updateProgress();
+        });
+
+        // Reset form function
+        function resetForm() {
+            $('form')[0].reset();
+            $('.form-group-modern').removeClass('has-value focused has-error');
+            $('.progress-ring').removeClass('completed').find('.fas').remove();
+            updateProgressRing(0);
+
+            // Show reset confirmation
+            const resetIndicator = $('<div class="reset-indicator">Form reset successfully <i class="fas fa-undo"></i></div>');
+            $('body').append(resetIndicator);
+
+            setTimeout(() => {
+                resetIndicator.addClass('show');
+            }, 100);
+
+            setTimeout(() => {
+                resetIndicator.removeClass('show');
+                setTimeout(() => resetIndicator.remove(), 300);
+            }, 2000);
+        }
+
+        // Update progress ring function (moved outside document ready)
+        function updateProgressRing(percentage) {
+            const ring = $('.progress-ring');
+            const text = $('.progress-text');
+            const degrees = (percentage / 100) * 360;
+
+            ring.css('background', `conic-gradient(var(--success-color) ${degrees}deg, rgba(255,255,255,0.2) ${degrees}deg)`);
+            text.text(percentage + '%');
+
+            if (percentage === 100) {
+                ring.addClass('completed');
+                setTimeout(() => {
+                    if (ring.find('.fas').length === 0) {
+                        ring.append('<i class="fas fa-check" style="position: absolute; color: white; z-index: 2; font-size: 0.8rem;"></i>');
+                    }
+                }, 300);
+            } else {
+                ring.removeClass('completed').find('.fas').remove();
+            }
+        }
+    </script>
+
+    <style>
+        /* Additional styles for enhanced features */
+        .form-group-modern.focused .form-label-modern {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .form-group-modern.has-value .form-control-modern,
+        .form-group-modern.has-value .form-select-modern {
+            border-color: var(--success-color);
+            background: rgba(16, 185, 129, 0.02);
+        }
+
+        .form-group-modern.has-value .input-icon {
+            color: var(--success-color);
+        }
+
+        .form-group-modern.has-error .form-control-modern,
+        .form-group-modern.has-error .form-select-modern {
+            border-color: var(--danger-color);
+            background: rgba(239, 68, 68, 0.02);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .form-group-modern.has-error .input-icon {
+            color: var(--danger-color);
+        }
+
+        .form-group-modern.has-error .form-label-modern {
+            color: var(--danger-color);
+        }
+
+        .progress-ring.completed {
+            animation: completePulse 0.6s ease-out;
+        }
+
+        .auto-save-indicator,
+        .reset-indicator {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--success-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-lg);
+            font-size: 0.875rem;
+            font-weight: 600;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .reset-indicator {
+            background: var(--info-color);
+        }
+
+        .auto-save-indicator.show,
+        .reset-indicator.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .datepicker {
+            border-radius: var(--border-radius-sm) !important;
+            box-shadow: var(--shadow-xl) !important;
+            border: none !important;
+        }
+
+        .datepicker table tr td.active,
+        .datepicker table tr td.active:hover {
+            background: var(--primary-color) !important;
+            border-radius: 50% !important;
+        }
+
+        .datepicker table tr td.today {
+            background: var(--success-color) !important;
+            border-radius: 50% !important;
+        }
+
+        /* Enhanced mobile responsiveness */
+        @@media (max-width: 576px) {
+            .auto-save-indicator,
+            .reset-indicator {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+                text-align: center;
+            }
+
+            .form-group-modern {
+                margin-bottom: 1.5rem;
+            }
+
+            .form-control-modern,
+            .form-select-modern {
+                padding: 0.875rem 0.875rem 0.875rem 2.5rem;
+            }
+
+            .input-icon {
+                left: 0.75rem;
+            }
+        }
+
+        /* Accessibility improvements */
+        @@media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* High contrast mode support */
+        @@media (prefers-contrast: high) {
+            .form-control-modern,
+            .form-select-modern {
+                border-width: 3px;
+            }
+
+            .btn-modern-primary {
+                border: 3px solid var(--success-color);
+            }
+        }
+
+        /* Additional animations */
+        @@keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @@keyframes completePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Focus visible for better accessibility */
+        .btn-modern:focus-visible,
+        .form-control-modern:focus-visible,
+        .form-select-modern:focus-visible {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+}
