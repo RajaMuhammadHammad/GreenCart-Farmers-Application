@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "GreenCartFarmers.WebApp\\GreenCartFarmers.WebApp.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "GreenCart.API\\GreenCart.API.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
